@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Rubba Rubba</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 50px;
+      letter-spacing: 4px;
+    }
+
+    #saying {
+      font-size: 2rem;
+      line-height: 1.4;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      margin-top: 40px;
+      padding: 18px 35px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>RUBBA RUBBA</h1>
+
+    <div id="saying"></div>
+
+    <button onclick="newSaying()">RUBBA AGAIN</button>
+
+  </div>
+
+  <script>
+
+    const sayings = [
+      "Have a nice day.",
+      "You look marvelous today.",
+      "Well, that was worth scanning.",
+      "Something good is headed your way.",
+      "Today seems like a good day to do something ridiculous.",
+      "You found the secret message.",
+      "Smile. You scanned a stranger.",
+      "Go do something that makes you happy.",
+      "You're doing better than you think.",
+      "Plot twist: today turns out great.",
+      "Be the reason somebody smiles today.",
+      "Take the scenic route.",
+      "Your luck just improved slightly.",
+      "Don't worry. I've got a good feeling about this.",
+      "Congratulations. You have excellent taste in QR codes.",
+      "The universe says hello.",
+      "Today is not a rehearsal.",
+      "Do something worth remembering.",
+      "You were curious. I respect that.",
+      "Rubba Rubba!"
+    ];
+
+    let lastSaying = -1;
+
+    function newSaying() {
+
+      let randomNumber;
+
+      do {
+        randomNumber = Math.floor(Math.random() * sayings.length);
+      } while (randomNumber === lastSaying && sayings.length > 1);
+
+      lastSaying = randomNumber;
+
+      document.getElementById("saying").textContent =
+        sayings[randomNumber];
+    }
+
+    newSaying();
+
+  </script>
+
+</body>
+</html>
