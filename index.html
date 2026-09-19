@@ -1,117 +1,681 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Rubba Rubba</title>
+<title>Rubba Rubba</title>
 
-  <style>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #111;
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
-      text-align: center;
+        margin: 0;
+        min-height: 100vh;
+        background: #0b0b0b;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     .container {
-      width: 90%;
-      max-width: 700px;
-      padding: 30px;
+        width: 92%;
+        max-width: 800px;
+        padding: 30px 15px;
     }
 
     h1 {
-      font-size: 3rem;
-      margin-bottom: 50px;
-      letter-spacing: 4px;
+        font-size: clamp(34px, 8vw, 64px);
+        margin: 0 0 35px;
+        letter-spacing: 2px;
     }
 
-    #saying {
-      font-size: 2rem;
-      line-height: 1.4;
-      min-height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    #message {
+        min-height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: clamp(25px, 5vw, 42px);
+        font-weight: bold;
+        line-height: 1.25;
+        margin-bottom: 45px;
     }
 
-    button {
-      margin-top: 40px;
-      padding: 18px 35px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
+    #instruction {
+        font-size: clamp(18px, 4vw, 27px);
+        margin-bottom: 25px;
     }
 
-    button:hover {
-      transform: scale(1.05);
+    #eightBall {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+        border-radius: 50%;
+        border: 5px solid #333;
+        background:
+            radial-gradient(circle at 35% 25%, #555 0%, #181818 25%, #000 65%);
+        box-shadow:
+            0 12px 30px rgba(0,0,0,.8),
+            inset -15px -18px 30px rgba(0,0,0,.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        transition: transform .15s;
     }
-  </style>
+
+    #eightBall:hover {
+        transform: scale(1.04);
+    }
+
+    #eightBall:active {
+        transform: scale(.96);
+    }
+
+    .eight {
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        background: white;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 58px;
+        font-weight: bold;
+        box-shadow: inset 0 0 8px #777;
+    }
+
+    .shake {
+        animation: shake .85s;
+    }
+
+    @keyframes shake {
+        0%   { transform: translate(0,0) rotate(0); }
+        10%  { transform: translate(-14px,-3px) rotate(-7deg); }
+        20%  { transform: translate(14px,3px) rotate(7deg); }
+        30%  { transform: translate(-13px,2px) rotate(-6deg); }
+        40%  { transform: translate(13px,-2px) rotate(6deg); }
+        50%  { transform: translate(-10px,-3px) rotate(-5deg); }
+        60%  { transform: translate(10px,3px) rotate(5deg); }
+        70%  { transform: translate(-7px,1px) rotate(-3deg); }
+        80%  { transform: translate(7px,-1px) rotate(3deg); }
+        90%  { transform: translate(-3px,0) rotate(-1deg); }
+        100% { transform: translate(0,0) rotate(0); }
+    }
+
+    .disabled {
+        cursor: default !important;
+        opacity: .65;
+    }
+
+    .footer {
+        margin-top: 45px;
+        color: #777;
+        font-size: 14px;
+        letter-spacing: 3px;
+    }
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
     <h1>RUBBA RUBBA</h1>
 
-    <div id="saying"></div>
+    <div id="message"></div>
 
-    <button onclick="newSaying()">RUBBA AGAIN</button>
+    <div id="instruction">
+        Say a question out loud and press the 8 ball
+    </div>
 
-  </div>
+    <div id="eightBall" role="button" aria-label="Ask the Rubba Ball" tabindex="0">
+        <div class="eight">8</div>
+    </div>
 
-  <script>
+    <div class="footer">RUBBARUBBA.COM</div>
 
-    const sayings = [
-      "Have a nice day.",
-      "You look marvelous today.",
-      "Well, that was worth scanning.",
-      "Something good is headed your way.",
-      "Today seems like a good day to do something ridiculous.",
-      "You found the secret message.",
-      "Smile. You scanned a stranger.",
-      "Go do something that makes you happy.",
-      "You're doing better than you think.",
-      "Plot twist: today turns out great.",
-      "Be the reason somebody smiles today.",
-      "Take the scenic route.",
-      "Your luck just improved slightly.",
-      "Don't worry. I've got a good feeling about this.",
-      "Congratulations. You have excellent taste in QR codes.",
-      "The universe says hello.",
-      "Today is not a rehearsal.",
-      "Do something worth remembering.",
-      "You were curious. I respect that.",
-      "Rubba Rubba!"
-    ];
+</div>
 
-    let lastSaying = -1;
+<script>
 
-    function newSaying() {
+const insults = [
+"You scanned a stranger's tattoo. What the fuck did you expect?",
+"Nosy little bastard, aren't you?",
+"Congratulations. Your phone works. Your judgment is still questionable.",
+"You actually scanned it. Fucking unbelievable.",
+"There's nothing here. Go do something useful.",
+"Your curiosity has once again produced absolutely nothing of value.",
+"Nice phone. Shame about the person holding it.",
+"You were warned about clicking strange links, dumbass.",
+"I could explain the joke, but I left my crayons at home.",
+"Somewhere, a village is wondering where you went.",
+"Your mother was right about you.",
+"You have the survival instincts of a moth at a porch light.",
+"This seemed like a good idea to you, didn't it?",
+"Bold move for someone with your decision-making skills.",
+"You scanned a tattoo and expected enlightenment. That's adorable.",
+"Fuck off. I'm a tattoo.",
+"Error 404: Common sense not found.",
+"Please return the phone to its responsible adult.",
+"Rubba Rubba, motherfucker.",
+"Thanks for visiting. Now piss off.",
+"Come back anytime. Actually, don't.",
+"Achievement unlocked: You scanned some guy's skin.",
+"Your prize is knowing you'll scan damn near anything.",
+"Don't feel bad. Okay, maybe feel a little bad.",
+"If curiosity killed the cat, you'd better stay away from traffic.",
+"This QR code has accomplished more today than you have.",
+"Well done. You successfully pointed a camera at something.",
+"Was scanning this really the highlight of your day?",
+"I admire your curiosity. Your judgment, not so much.",
+"You've made worse decisions. Probably.",
+"Welcome. Expectations were already low.",
+"Of all the things you could have done today, you chose this.",
+"Your dedication to questionable decisions is impressive.",
+"You scanned me. Now we're both disappointed.",
+"Don't worry, this gets dumber.",
+"Your phone deserves a smarter owner.",
+"Congratulations on finding absolutely nothing important.",
+"Look at you, pressing buttons and hoping for meaning.",
+"Curiosity is admirable. Whatever you're doing is something else.",
+"You could have walked away. You didn't.",
+"Welcome to the consequences of your own curiosity.",
+"That was your first mistake.",
+"Life gave you choices. You chose to scan this.",
+"You're exactly the kind of person this QR code was waiting for.",
+"Imagine explaining to someone why you're reading this.",
+"You're still here? Fascinating.",
+"Scanning random tattoos is how horror movies start.",
+"Your decision-making process needs adult supervision.",
+"At least you know your camera works.",
+"Today wasn't going badly enough already?",
+"You have officially accomplished nothing.",
+"There's still time to pretend this never happened.",
+"You came all this way for an insult. Efficient.",
+"You could be learning something right now.",
+"Some people climb mountains. You scan tattoos.",
+"Congratulations, explorer. You discovered sarcasm.",
+"Your Nobel Prize is probably in the mail.",
+"You looked smarter before you scanned this.",
+"Don't blame the QR code. You started this.",
+"You're not lost. You're just making terrible choices.",
+"Your curiosity needs a leash.",
+"This is why instructions come with warning labels.",
+"Somewhere your ancestors are shaking their heads.",
+"You really thought there'd be something profound here?",
+"Plot twist: You're the joke.",
+"Scanning this was optional. Remember that.",
+"You've officially volunteered to be insulted.",
+"Thanks for making this incredibly easy.",
+"Even your phone seems embarrassed.",
+"I hope this was worth the battery percentage.",
+"Your search for meaning has taken an unfortunate turn.",
+"You've got courage. Intelligence remains under investigation.",
+"Maybe put the phone down for a minute.",
+"You've discovered the internet's least useful destination.",
+"Congratulations on your commitment to nonsense.",
+"That's five seconds of your life you're not getting back.",
+"Your curiosity has betrayed you again.",
+"I bet you touch wet paint signs too.",
+"You probably press elevator buttons more than once.",
+"You look like someone who reads terms and conditions after clicking Agree.",
+"Was there really no better use of your time?",
+"You scan first and ask questions later, don't you?",
+"At least you're consistent.",
+"You have an impressive tolerance for disappointment.",
+"You're doing great, if the goal was wasting time.",
+"Some lessons are expensive. This one was merely stupid.",
+"You came seeking wisdom. That's your first problem.",
+"Your adventure has peaked surprisingly early.",
+"Welcome to nowhere.",
+"You should probably lower your expectations.",
+"Your instincts brought you here. Think about that.",
+"You're why QR codes have trust issues.",
+"Another satisfied customer. Probably not.",
+"Please tell me you didn't expect a prize.",
+"The good news is nobody can stop you. The bad news is nobody stopped you.",
+"You've unlocked absolutely fuck-all.",
+"Try looking mysterious while reading this.",
+"Your dignity left about three seconds ago.",
+"Don't worry, I've seen worse. Not often, though.",
+"Your curiosity is stronger than your common sense.",
+"You're remarkably committed to this mistake.",
+"Maybe this will look better on your résumé.",
+"You could have been productive. But here we are.",
+"At least you're easily entertained.",
+"Congratulations on being exactly as predictable as expected.",
+"Did you really think a tattoo was going to improve your life?",
+"Your standards for entertainment concern me.",
+"You are now officially part of the problem.",
+"Scanning this seemed smarter before you did it, huh?",
+"You're brave. Or bored. Probably bored.",
+"You've found the digital equivalent of a dead end.",
+"Maybe ask yourself where things went wrong.",
+"Don't worry. The internet has seen worse.",
+"That little voice telling you not to scan this deserved better.",
+"You ignored your instincts and somehow ended up here.",
+"Welcome, fearless idiot.",
+"Your reward is mild regret.",
+"You've proven technology is accessible to everyone.",
+"Some doors should remain closed. Some QR codes unscanned.",
+"You're surprisingly easy to lure with little black squares.",
+"Mission accomplished, I guess.",
+"You're one scan away from becoming a cautionary tale.",
+"I admire the confidence. Not the execution.",
+"You make curiosity look dangerous.",
+"Congratulations on finding the bottom of the internet.",
+"Your journey has brought you exactly nowhere.",
+"This isn't the secret of life. Sorry, dumbass.",
+"You've reached peak curiosity.",
+"Maybe go outside.",
+"Your phone can do amazing things. You chose this.",
+"Don't look at me. You're the one who scanned it.",
+"That was disappointingly easy.",
+"You're probably fun at warning signs.",
+"Have you considered a hobby?",
+"This is your sign to rethink some choices.",
+"Nothing says good judgment like scanning strangers.",
+"You're the reason this website exists.",
+"Seriously? That's what you decided to do?",
+"I expected nothing and you still surprised me.",
+"Your curiosity has the subtlety of a wrecking ball.",
+"At least pretend you learned something.",
+"You've entered the sarcasm zone.",
+"Proceed with absolutely no dignity.",
+"Nobody made you scan this.",
+"You did this entirely to yourself.",
+"Your phone tried to warn you. Probably.",
+"You've demonstrated impressive commitment to a bad idea.",
+"Welcome to Rubba Rubba. Standards are low.",
+"You're about to make another questionable decision, aren't you?",
+"You clearly have too much free time.",
+"I hope you weren't expecting inspirational bullshit.",
+"Congratulations. You've been digitally insulted by a tattoo.",
+"Modern technology has led humanity to this moment.",
+"Centuries of scientific progress made this possible. Fucking incredible.",
+"Humanity invented smartphones so you could do this.",
+"Somewhere an engineer is deeply disappointed.",
+"Your ancestors survived plagues for this?",
+"Evolution has some explaining to do.",
+"You're living proof that curiosity doesn't require a plan.",
+"Your phone is smarter than this decision.",
+"Maybe scan it again. I'm sure it'll improve your life.",
+"Congratulations, detective. You cracked the case of the obvious QR code.",
+"You followed the squares and found disappointment.",
+"Your journey from curiosity to regret was impressively fast.",
+"Achievement unlocked: Questionable judgment.",
+"Achievement unlocked: Easily distracted.",
+"Achievement unlocked: Digital dumbass.",
+"Achievement unlocked: Absolutely nothing useful.",
+"Your prize is another bad decision.",
+"You're doing important work here.",
+"Please continue. Science needs data.",
+"You're making excellent choices today.",
+"That was sarcasm, in case you needed help.",
+"You look like someone who needs an 8 ball to make decisions.",
+"Good news: There's an 8 ball below. Bad news: You're still you.",
+"Maybe the 8 ball can help. God knows you need something.",
+"Your future is uncertain. Your judgment isn't.",
+"Let's ask a plastic ball. It can't do much worse.",
+"You've already trusted a tattoo. Why stop now?",
+"Ready to outsource your decisions to a black ball?",
+"This should end well.",
+"What could possibly go wrong?",
+"Don't worry. The 8 ball is almost qualified.",
+"Your life decisions are about to get professional guidance.",
+"Finally, an authority figure you can understand.",
+"Ask the ball. Responsibility is overrated.",
+"Let fate handle it. You've done enough damage.",
+"Time to consult the world's least qualified adviser.",
+"Sure, ask the 8 ball. That's probably an improvement.",
+"Your decision-making team just gained a plastic sphere.",
+"Let's see if random chance can outperform you.",
+"The bar is low, ball. Don't screw this up.",
+"Maybe the universe has better judgment.",
+"Prepare yourself for highly questionable wisdom.",
+"The 8 ball has reviewed your history and is concerned.",
+"Ask carefully. Or don't. You never do.",
+"Your destiny awaits. Unfortunately.",
+"Go ahead. Ask something stupid.",
+"The ball is ready. I'm not sure you are.",
+"Let's make another decision you'll eventually regret.",
+"Ask away, genius.",
+"The universe is listening. Against its better judgment.",
+"Your question probably deserves the answer it's about to get.",
+"Welcome to advanced decision-making.",
+"Trust the ball. Clearly your system isn't working.",
+"You're one click away from wisdom-ish.",
+"Ask the question. Lower your expectations.",
+"Let's see what fate thinks of your nonsense.",
+"The ball has seen things. Mostly people like you.",
+"Ready for answers you probably won't listen to?",
+"Go ahead. Tempt fate.",
+"Ask your question. Make it embarrassing.",
+"The universe has reluctantly agreed to participate.",
+"Your consultation begins now.",
+"Try not to waste the ball's time.",
+"You're asking a toy for advice. We're off to a strong start.",
+"The ball can't judge you. I can.",
+"Let's outsource some responsibility.",
+"Ask the ball before you make things worse.",
+"Fate has entered the chat.",
+"The oracle is cheap, sarcastic, and ready.",
+"Rubba Rubba welcomes your poor decisions.",
+"Go ahead. The ball has nothing better to do.",
+"Make your question count. Or don't.",
+"Your future is one tap away from being equally confusing.",
+"Proceed, brave dumbass.",
+"Ask the damn ball already."
+];
 
-      let randomNumber;
+const responses = [
+"Signs point to hell no.",
+"Absolutely. What could possibly go wrong?",
+"Ask again when you're less stupid.",
+"The universe says maybe. Helpful, isn't it?",
+"Fuck no. Next question.",
+"Against all common sense... yes.",
+"Outlook questionable. Much like your judgment.",
+"You already know the answer. You're just hoping I'm wrong.",
+"Highly unlikely, but you've ignored better advice before.",
+"All signs point to yes. That's concerning.",
+"Yes. Try not to fuck it up.",
+"No. Seriously. Just no.",
+"Maybe. Isn't uncertainty fun?",
+"Absolutely fucking not.",
+"Sure. Let's see how badly this goes.",
+"The universe reluctantly says yes.",
+"Not a chance in hell.",
+"Ask again after you've had a better idea.",
+"Yes, but don't blame me.",
+"Nope. Save yourself the embarrassment.",
+"Maybe. Flip a coin like a normal person.",
+"Yes. Somehow.",
+"No. Your instincts are drunk.",
+"Probably, which is unfortunate.",
+"Don't fucking do it.",
+"Go for it. I could use the entertainment.",
+"Yes. Against my better judgment.",
+"No. Even I have standards.",
+"Maybe tomorrow. Today you're dangerous.",
+"Absolutely yes. This should be interesting.",
+"Hard no.",
+"Soft yes. Very soft.",
+"Ask someone qualified. I'm a fucking ball.",
+"Sure, why the hell not?",
+"Nope. Move along.",
+"The future says yes. The future also looks worried.",
+"Chances are good. Your execution won't be.",
+"Not looking great, champ.",
+"Maybe if you stop overthinking it.",
+"Yes. Don't get cocky.",
+"No. And you know damn well why.",
+"Possibly. That's the best you're getting.",
+"The universe just rolled its eyes.",
+"Yes, but wear a helmet.",
+"Fuck around and find out.",
+"Not today, Satan.",
+"Surprisingly, yes.",
+"Surprisingly, no.",
+"Ask again. I wasn't paying attention.",
+"The answer is yes-ish.",
+"The answer is no-ish.",
+"Proceed with questionable confidence.",
+"Abort mission.",
+"Do it. Regret builds character.",
+"Don't do it. You have enough character.",
+"Yes. But delete my number afterward.",
+"No. I'm saving you from yourself.",
+"Maybe. Depends how stupid the plan is.",
+"Odds look good. That's suspicious.",
+"Odds look terrible. So you'll probably do it anyway.",
+"Yes. The cosmos has spoken.",
+"No. The cosmos has filed a complaint.",
+"Try again after making better choices.",
+"Sure. Responsibility is overrated.",
+"Absolutely not, you magnificent idiot.",
+"Yes, you reckless bastard.",
+"Maybe. I'm not your mother.",
+"No chance.",
+"Very likely.",
+"Very unlikely.",
+"Signs point to 'what the fuck are you thinking?'",
+"Go ahead. I want to see what happens.",
+"Walk away while you still can.",
+"Yes. Fortune favors the dumb.",
+"No. Even fortune has limits.",
+"Ask again in five minutes.",
+"Ask again after coffee.",
+"Ask again when sober-minded.",
+"Your chances are better than your judgment.",
+"The outlook is disturbingly positive.",
+"The outlook is beautifully terrible.",
+"Yes. Somehow the math works.",
+"No. The math called in sick.",
+"Maybe. Science refuses to comment.",
+"Absolutely. Send it.",
+"Negative, Ghost Rider.",
+"Affirmative, dumbass.",
+"Try it and report back.",
+"Don't even think about it.",
+"Too late. You've already decided.",
+"You were going to ignore me anyway.",
+"Yes. But keep expectations underground.",
+"No. Expectations are already too high.",
+"Maybe. Lower the bar.",
+"Proceed carefully. Or your usual way.",
+"Do it. I'm bored.",
+"Don't. I'm tired of watching this.",
+"The stars say yes.",
+"The stars say fuck no.",
+"The stars refuse to get involved.",
+"Destiny says maybe.",
+"Destiny blocked your number.",
+"Destiny says send it.",
+"Yes, with unnecessary confidence.",
+"No, with extreme prejudice.",
+"Maybe, with plausible deniability.",
+"Definitely.",
+"Definitely not.",
+"Probably.",
+"Probably not.",
+"Could happen.",
+"Wouldn't bet on it.",
+"I'd bet someone else's money on it.",
+"Yes. This is not financial advice.",
+"No. This is barely advice.",
+"Sure. What's the worst that could happen?",
+"Actually, don't answer that.",
+"Your future self says yes.",
+"Your future self is screaming no.",
+"Your future self has stopped taking your calls.",
+"Yes. Prepare an apology.",
+"No. Prepare an excuse.",
+"Maybe. Prepare both.",
+"Green light.",
+"Red light.",
+"Yellow light. You know you'll floor it anyway.",
+"Proceed.",
+"Retreat.",
+"Stand there looking confused.",
+"Yes. Full speed ahead.",
+"No. Reverse immediately.",
+"Maybe. Put it in neutral.",
+"The ball approves.",
+"The ball strongly disapproves.",
+"The ball couldn't care less.",
+"Fuck yes.",
+"Fuck no.",
+"Fuck maybe.",
+"That's a terrible idea. Do it.",
+"That's a great idea. You'll probably ruin it.",
+"That's not even a question worth answering.",
+"Ask something harder.",
+"Ask something less stupid.",
+"Ask something I can lie about.",
+"Yes, if you're brave.",
+"No, if you're smart.",
+"Maybe, if you're lucky.",
+"Luck is on your side.",
+"Luck left the building.",
+"Luck is hiding from you.",
+"The universe approves.",
+"The universe objects.",
+"The universe requests clarification.",
+"You're cleared for takeoff.",
+"Flight canceled.",
+"Expect turbulence.",
+"Yes. Buckle up.",
+"No. Stay home.",
+"Maybe. Bring snacks.",
+"Your odds are excellent.",
+"Your odds suck.",
+"Your odds are none of my business.",
+"Signs are favorable.",
+"Signs are unfavorable.",
+"Someone stole the signs.",
+"Outlook good.",
+"Outlook bad.",
+"Outlook drunk.",
+"Confidence high.",
+"Confidence low.",
+"Confidence wildly unjustified.",
+"Go with your gut.",
+"Ignore your gut. It got you here.",
+"Consult a professional.",
+"Consult literally anyone else.",
+"Sure. Trust a random website.",
+"Yes. I have spoken.",
+"No. I have also spoken.",
+"Maybe. I'm keeping my options open.",
+"Do it now.",
+"Wait.",
+"Run.",
+"Proceed at your own damn risk.",
+"Ask again later.",
+"Don't ask again later.",
+"Stop asking questions you don't want answered.",
+"Yes, but this stays between us.",
+"No, and erase your browser history.",
+"Maybe. Nobody needs to know.",
+"Chances are strong.",
+"Chances are weak.",
+"Chances have left the chat.",
+"Everything points to yes.",
+"Everything points to no.",
+"Everything points in random directions.",
+"Yes. Embrace the chaos.",
+"No. You've had enough chaos.",
+"Maybe. Chaos is undecided.",
+"Your plan has potential.",
+"Your plan has problems.",
+"Calling that a plan is generous.",
+"Proceed, legend.",
+"Retreat, genius.",
+"Sit this one out, champ.",
+"Yes. Make it memorable.",
+"No. Make better choices.",
+"Maybe. Make popcorn.",
+"The answer you want is yes.",
+"The answer you need is no.",
+"The answer you're getting is maybe.",
+"Absolutely. Don't overthink it.",
+"Absolutely not. Start over.",
+"Could go either way. Helpful, right?",
+"Trust yourself. Actually, maybe don't.",
+"Go ahead, you beautiful disaster.",
+"Walk away, you beautiful disaster.",
+"The ball says yes. Legal says no.",
+"The ball says no. Your ego says yes.",
+"The ball says maybe. Everyone's disappointed.",
+"Final answer: yes.",
+"Final answer: no.",
+"Final answer: you're on your own."
+];
 
-      do {
-        randomNumber = Math.floor(Math.random() * sayings.length);
-      } while (randomNumber === lastSaying && sayings.length > 1);
+const message = document.getElementById("message");
+const ball = document.getElementById("eightBall");
+const instruction = document.getElementById("instruction");
 
-      lastSaying = randomNumber;
+let pressCount = 0;
+let lastResponse = -1;
+let locked = false;
 
-      document.getElementById("saying").textContent =
-        sayings[randomNumber];
+function randomItem(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function showRandomInsult() {
+    message.textContent = randomItem(insults);
+}
+
+function askBall() {
+
+    if (locked) return;
+
+    pressCount++;
+
+    ball.classList.remove("shake");
+    void ball.offsetWidth;
+    ball.classList.add("shake");
+
+    instruction.textContent = "The Rubba Ball is thinking...";
+
+    if (pressCount > 5) {
+
+        locked = true;
+
+        setTimeout(() => {
+            message.textContent =
+                "Don't you have something better to do, you worthless FUCK!";
+
+            instruction.textContent =
+                "The Rubba Ball is done with you.";
+
+            ball.classList.remove("shake");
+            ball.classList.add("disabled");
+        }, 850);
+
+        return;
     }
 
-    newSaying();
+    let index;
 
-  </script>
+    do {
+        index = Math.floor(Math.random() * responses.length);
+    } while (index === lastResponse && responses.length > 1);
+
+    lastResponse = index;
+
+    setTimeout(() => {
+        message.textContent = responses[index];
+        instruction.textContent =
+            "Say another question out loud and press the 8 ball";
+        ball.classList.remove("shake");
+    }, 850);
+}
+
+ball.addEventListener("click", askBall);
+
+ball.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        askBall();
+    }
+});
+
+showRandomInsult();
+
+</script>
 
 </body>
-</html>
+</html>  
